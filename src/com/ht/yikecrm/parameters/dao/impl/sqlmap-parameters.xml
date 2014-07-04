@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="comParameters" type="com.ht.yikecrm.parameters.model.ComParameters"/>
+	<sql id="baseParametersWhere">
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="pkey" prepend="and">
+				pkey=#pkey#
+			</isNotEmpty>
+			<isNotEmpty property="pvalue" prepend="and">
+				pvalue=#pvalue#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<sql id="baseParametersSet">
+		<dynamic prepend="SET">
+			<isNotEmpty property="filed.pkey" prepend=",">
+				pkey=#filed.pkey#
+			</isNotEmpty>
+			<isNotEmpty property="filed.pvalue" prepend=",">
+				pvalue=#filed.pvalue#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<select id="findParametersAll" resultClass="comParameters" parameterClass="HashMap">
+		SELECT * FROM com_parameters 
+		<include refid="baseParametersWhere"/>
+	</select>
+	<insert id="insertParameters" parameterClass="HashMap">
+		<![CDATA[ 	
+			insert into com_parameters(
+				pkey,
+				pvalue
+			)values(
+				#model.pkey#,
+				#model.pvalue#
+			)	
+		 ]]>
+	</insert>
+	
+	
+	<update id="updateParameter" parameterClass="HashMap">
+ 		 <![CDATA[ 	
+ 		update com_parameters 	 						
+ 		 ]]>
+ 		 <include refid="baseParametersSet"/>
+ 		 <include refid="baseParametersWhere"/>
+	</update>
+</sqlMap>

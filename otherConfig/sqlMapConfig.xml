@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="false" maxRequests="2014" maxSessions="512"
+		maxTransactions="128" useStatementNamespaces="true" />
+
+	<!-- 客户 -->
+	<sqlMap resource="com/ht/yikecrm/customer/dao/impl/ibatis/sqlmap-customer.xml" />
+	<!-- 潜在客户 -->
+	<sqlMap resource="com/ht/yikecrm/saleslead/dao/impl/ibatis/sqlmap-salesLead.xml" />
+	<!-- 业务机会 -->
+	<sqlMap resource="com/ht/yikecrm/business/dao/impl/ibatis/sqlmap-business.xml" />
+	<!-- 业绩 -->
+	<sqlMap resource="com/ht/yikecrm/business/dao/impl/ibatis/sqlmap-performance.xml" />
+	<!-- 联系人 -->
+	<sqlMap resource="com/ht/yikecrm/linkman/dao/impl/ibatis/sqlmap-linkman.xml" />
+	<!-- 联系人角色 -->
+	<sqlMap resource="com/ht/yikecrm/business/dao/impl/ibatis/sqlmap-linkmanrole.xml" />
+	<!-- 业务机会产品 -->
+	<sqlMap resource="com/ht/yikecrm/product/dao/impl/ibatis/sqlmap-productrelation.xml" />
+	<!-- 阶段历史 -->
+	<sqlMap resource="com/ht/yikecrm/business/dao/impl/ibatis/sqlmap-stage.xml"/>
+	<!-- 角色 -->
+	<sqlMap resource="com/ht/yikecrm/role/dao/impl/ibatis/sqlmap-role.xml" />
+	<!-- 角色权限 -->
+	<sqlMap resource="com/ht/yikecrm/role/dao/impl/ibatis/sqlmap-roleRelation.xml" />
+	<!-- 用户 -->
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-comUser.xml" />
+	<!-- 用户 -->
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-crmUser.xml" />
+	<!-- 日程活动 -->
+	<sqlMap resource="com/ht/yikecrm/activity/dao/impl/ibatis/sqlmap-activity.xml" />
+	<!-- 短信 -->
+	<sqlMap resource="com/ht/yikecrm/planmessage/dao/impl/ibatis/sqlmap-planmessage.xml" />
+	<!-- 短信反馈详情 -->
+	<sqlMap resource="com/ht/yikecrm/planmessage/dao/impl/ibatis/sqlmap-planmessageDetails.xml" />
+	<!-- 通讯模板 -->
+	<sqlMap resource="com/ht/yikecrm/planmessage/dao/impl/ibatis/sqlmap-commTemplate.xml" />
+	<!-- 短信签名 -->
+	<sqlMap resource="com/ht/yikecrm/planmessage/dao/impl/ibatis/sqlmap-commSignature.xml" />
+	<!-- 导入日志 -->
+	<sqlMap resource="com/ht/yikecrm/importlog/dao/impl/ibatis/sqlmap-importlog.xml" />
+	<sqlMap resource="com/ht/yikecrm/importlog/dao/impl/ibatis/sqlmap-importFile.xml" />
+	<!-- 组 -->
+	<!-- <sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-group.xml" /> -->
+	<!-- <sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-groupRelation.xml" /> -->
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-sharingRule.xml" />
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-screening.xml" />
+	
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-view.xml" />	
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-viewRelation.xml" />	
+	
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-licenseDefine.xml" />
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-modelDefine.xml" />
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-modelLicenseRela.xml" />
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-comTenant.xml" />
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-comTenantfee.xml" />
+	
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmColumnDefine.xml" />
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmColumnDefineMatch.xml" />
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmColumnDefineData.xml" />
+	<!-- <sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmTenantDataDict.xml" /> -->
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmTenantModelDefine.xml" />
+	<!-- 栏目 -->
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-part.xml" />
+	<!-- 列表显示 -->
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-listDisplay.xml" />
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-mbllistDisplay.xml" />
+	<!-- 合同 -->
+	<sqlMap resource="com/ht/yikecrm/order/dao/impl/ibatis/sqlmap-order.xml" />
+	<!-- 回款记录 -->
+	<sqlMap resource="com/ht/yikecrm/order/dao/impl/ibatis/sqlmap-reimbursement.xml" />
+	<!-- 发票记录 -->
+	<sqlMap resource="com/ht/yikecrm/order/dao/impl/ibatis/sqlmap-billing.xml" />
+	<!-- 合同进度 -->
+	<!-- <sqlMap resource="com/ht/yikecrm/order/dao/impl/ibatis/sqlmap-orderprogress.xml" />  -->
+	<!-- 报表 -->
+	<sqlMap resource="com/ht/yikecrm/report/dao/impl/ibatis/sqlmap-report.xml" />
+	<sqlMap resource="com/ht/yikecrm/report/dao/impl/ibatis/sqlmap-reportdict.xml" />
+	<sqlMap resource="com/ht/yikecrm/report/dao/impl/ibatis/sqlmap-reportrelation.xml" />
+	<!-- 解决方案 -->
+	<sqlMap resource="com/ht/yikecrm/solution/dao/impl/ibatis/sqlmap-solution.xml" />
+	<!-- 产品 -->
+	<sqlMap resource="com/ht/yikecrm/product/dao/impl/ibatis/sqlmap-product.xml" />
+	<!-- 投诉处理 -->
+	<sqlMap resource="com/ht/yikecrm/complaint/dao/impl/ibatis/sqlmap-complaint.xml"/>
+	<!-- 投诉处理 -->
+	<sqlMap resource="com/ht/yikecrm/charts/dao/impl/ibatis/sqlmap-charts.xml"/>
+	<!-- 栏目 -->
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-crmpart.xml"/>
+	<!-- 首页配置 -->
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-comindexconfig.xml"/>
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-crmindexconfig.xml"/>
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-comindexcolumn.xml"/>
+	<!-- 外键查询 -->
+	<sqlMap resource="com/ht/yikecrm/foreignkey/dao/impl/ibatis/sqlmap-foreignkey.xml"/>
+	<!-- 账户 -->
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-account.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-consumption.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-consumptionuser.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-consumptiongeneral.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-consumptionactive.xml"/>
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-count.xml"/>
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-countRelation.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-smsConsumption.xml"/>
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-smsAccount.xml"/>
+	<sqlMap resource="com/ht/yikecrm/parameters/dao/impl/sqlmap-parameters.xml"/>
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-divertData.xml"/>
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmColumnListInfo.xml"/>
+	<sqlMap resource="com/ht/yikecrm/definition/dao/impl/ibatis/sqlmap-crmPhaseListInfo.xml"/>
+	<sqlMap resource="com/ht/yikecrm/group/dao/impl/ibatis/sqlmap-comColumnListInfo.xml"/>
+	<sqlMap resource="com/ht/agent/agentUser/dao/impl/sqlmap-agentUser.xml" />
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-smsRecharge.xml"/>
+	<!-- 工作日报 -->
+	<sqlMap resource="com/ht/yikecrm/workreport/dao/impl/ibatis/sqlmap-workreport.xml"/>
+	<sqlMap resource="com/ht/yikecrm/workreport/dao/impl/ibatis/sqlmap-workreportReply.xml"/>
+	
+	<!-- 查重 -->
+	<sqlMap resource="com/ht/yikecrm/dataManager/dao/impl/ibatis/sqlmap-findRepeatSetup.xml"/>
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-login.xml"/>
+	
+	<!-- amc -->
+	<sqlMap resource="com/ht/yikecrm/news/dao/impl/ibatis/sqlmap-news.xml"/>
+	<!-- back -->	
+	<sqlMap resource="com/ht/yikecrm/account/dao/impl/ibatis/sqlmap-recharge.xml"/>
+	<sqlMap resource="com/ht/yikecrm/user/dao/impl/ibatis/sqlmap-comTenantVisits.xml"/>
+	<sqlMap resource="com/ht/user/dbutil/dao/impl/sqlmap-dataSource.xml"/>
+	<sqlMap resource="com/ht/user/dbutil/dao/impl/sqlmap-dynamicDataSource.xml"/>
+	<!-- 公司通告 -->
+	<sqlMap resource="com/ht/yikecrm/announcement/dao/impl/sqlmap-announcement.xml"/>
+	
+	<!-- ims -->
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-storage.xml"/>
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-storageUser.xml"/>
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-storageProduct.xml"/>
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-productOrder.xml"/>
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-inOrder.xml"/>
+	<sqlMap resource="com/ht/ims/storage/dao/impl/ibatis/sqlmap-outOrder.xml"/>
+	<sqlMap resource="com/ht/ims/supplier/dao/impl/ibatis/sqlmap-supplier.xml"/>
+	<sqlMap resource="com/ht/ims/role/dao/impl/sqlmap-imsRole.xml" />
+	<sqlMap resource="com/ht/ims/role/dao/impl/sqlmap-imsRoleRelation.xml" />
+	<sqlMap resource="com/ht/ims/module/dao/impl/sqlmap-comImsModelDefine.xml" />
+	<sqlMap resource="com/ht/ims/module/dao/impl/sqlmap-comImsOperation.xml" />
+	<sqlMap resource="com/ht/yikecrm/product/dao/impl/ibatis/sqlmap-unit.xml"/>
+	<sqlMap resource="com/ht/ims/definition/dao/impl/sqlmap-imsColumnDefine.xml"/>
+	<sqlMap resource="com/ht/yikecrm/attachment/dao/impl/sqlmap-attachment.xml"/>
+	
+</sqlMapConfig>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 配置了系列常量 -->
+	<constant name="struts.custom.i18n.resources" value="resource" />
+	<constant name="struts.action.extension" value="yk" />
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.server.static.browserCache" value="false" />
+	<constant name="struts.ui.theme" value="xhtml" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.mapper.class" value="com.ht.yikecrm.util.struts.Restful2ActionMapper" />
+	<constant name="struts.multipart.saveDir" value="/data/log/uploadTemp" />
+	<constant name="struts.multipart.maxSize" value="5242880" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+
+	<!-- 基本package包含一些基本的拦截器 -->
+	<package name="crm-base" extends="struts-default" namespace="/crm">
+		<interceptors>
+			<interceptor name="exception"
+				class="com.ht.yikecrm.interceptor.ExceptionInterceptor" />
+			<interceptor name="params"
+				class="com.ht.yikecrm.interceptor.ParametersInterceptor" />
+			<interceptor-stack name="indexStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="i18n" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="scopedModelDriven" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload" />
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="multiselect" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="debugging" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="indexStack" />
+	</package>
+
+	<!-- 门户 -->
+		<package name="default" extends="struts-default" namespace="/crm">
+			<interceptors>
+				<interceptor name="exception"
+					class="com.ht.yikecrm.interceptor.ExceptionInterceptor" />
+				<interceptor-stack name="indexStack">
+					<interceptor-ref name="defaultStack" />
+					<interceptor-ref name="exception" />
+				</interceptor-stack>
+			</interceptors>
+			<default-interceptor-ref name="indexStack" />
+			<global-results>
+				<result name="error" type="redirect">/crm/login.yk</result>
+				<result name="noexist">/WEB-INF/page/crm/noExist.jsp</result>
+				<result name="noexistind">/WEB-INF/page/crm/noExistInD.jsp</result>
+				<result name="403">/403.html</result>
+				<result name="index">/WEB-INF/page/platform/crm/index.jsp</result>
+				<result name="invalid.token" type="redirect">/WEB-INF/page/platform/crm/login.jsp
+				</result>
+			</global-results>
+			<global-exception-mappings>
+				<exception-mapping exception="java.lang.Exception"
+					result="error" />
+			</global-exception-mappings>
+			<action name="index" class="com.ht.yikecrm.action.IndexAction"
+				method="index">
+			</action>
+			<action name="login" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="login">
+				<result name="input">/WEB-INF/page/platform/crm/login.jsp</result>
+				<result name="mblinput">/WEB-INF/page/platform/crm/mobile/mbllogin.jsp
+				</result>
+				<result name="home" type="redirectAction">
+					<param name="actionName">home</param>
+					<param name="namespace">/crm</param>
+				</result>
+				<result name="mblhome" type="redirectAction">
+					<param name="actionName">home_mobile</param>
+					<param name="namespace">/crm</param>
+				</result>
+				<result name="mblmanhome" type="redirectAction">
+					<param name="actionName">home_manmobile</param>
+					<param name="namespace">/crm</param>
+				</result>
+				<result name="activate">/WEB-INF/page/platform/crm/activate.jsp</result>
+			</action>
+			<action name="logout" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="logout">
+				<result name="login" type="redirectAction">
+					<param name="actionName">login</param>
+					<param name="namespace">/crm</param>
+				</result>
+			</action>
+			<action name="activate" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="activate">
+				<result name="input">/WEB-INF/page/platform/crm/activate.jsp</result>
+				<result name="success">/WEB-INF/page/platform/crm/login.jsp</result>
+				<result name="mistake">/WEB-INF/page/platform/crm/mistake.jsp</result>
+			</action>
+
+			<action name="util_*" class="com.ht.yikecrm.action.RefreshCacheAction"
+				method="{1}">
+			</action>
+			<action name="activateTo" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="activateTo">
+				<interceptor-ref name="indexStack" />
+				<interceptor-ref name="token">
+					<param name="includeMethods">activateTo</param>
+				</interceptor-ref>
+				<result name="success">/WEB-INF/page/platform/crm/activate_success.jsp
+				</result>
+				<result name="invalid.token" type="redirect">/WEB-INF/page/platform/crm/login.jsp
+				</result>
+				<result name="mistake">/WEB-INF/page/platform/crm/mistake.jsp</result>
+				<result name="input">/WEB-INF/page/platform/crm/activate.jsp</result>
+			</action>
+
+			<action name="sendEmail" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="sendEmail">
+				<result name="success">/WEB-INF/page/platform/crm/sendEmail_success.jsp
+				</result>
+			</action>
+			<!-- 忘记密码操作 -->
+			<action name="backPwdAction_*" class="com.ht.yikecrm.action.com.user.CrmLoginAction"
+				method="{1}">
+				<result name="backOne">/WEB-INF/page/crm/backpwd/backpwd.jsp</result>
+				<result name="backTwo">/WEB-INF/page/crm/backpwd/backpwd_backpwdOne.jsp
+				</result>
+				<result name="input">/WEB-INF/page/platform/crm/backPwdResult/backPwdinpput.jsp
+				</result>
+				<result name="success">/WEB-INF/page/platform/crm/login.jsp</result>
+				<result name="mistake">/WEB-INF/page/platform/crm/backPwdResult/backPwdmistake.jsp
+				</result>
+				<result name="sendok">/WEB-INF/page/crm/backpwd/backpwd_backpwdTwo.jsp
+				</result>
+				<result name="unuser">/WEB-INF/page/crm/backpwd/backpwd_backpwdunUser.jsp
+				</result>
+				<result name="uncomuser">/WEB-INF/page/crm/backpwd/backpwd_backpwdunComUser.jsp
+				</result>
+				<result name="unActive">/WEB-INF/page/crm/backpwd/backpwd_backpwdunActive.jsp
+				</result>
+			</action>
+
+			<action name="registerto" class="tenantAction" method="register">
+				<interceptor-ref name="indexStack" />
+				<interceptor-ref name="token">
+					<param name="includeMethods">register</param>
+				</interceptor-ref>
+				<result name="input">/WEB-INF/page/platform/crm/register.jsp</result>
+				<!-- <result name="crmhome" type="redirectAction">
+					<param name="actionName">home</param>
+				</result> -->
+				<result name="invalid.token" type="redirect">/crm/tokenError.jsp
+				</result>
+				<result name="back" type="redirect">
+					${rUrl}
+				</result>
+			</action>
+
+			<action name="register" class="tenantAction" method="registerTo">
+				<result name="inputto">/WEB-INF/page/platform/crm/register.jsp</result>
+			</action>
+			<action name="validateEmail" class="tenantAction" method="ajaxValidateEmail">
+				<!-- <result></result> -->
+			</action>
+		</package>
+
+		<!-- YiKeCRM系统 普通跳转方式 -->
+		<package name="crm-default" extends="crm-base" namespace="/crm">
+			<interceptors>
+				<interceptor name="crmAuth"
+					class="com.ht.yikecrm.interceptor.CRMAuthorityInterceptorNew" />
+				<interceptor name="crmCount"
+					class="com.ht.yikecrm.interceptor.FlowInterceptor" />
+				<interceptor-stack name="crmStack">
+					<interceptor-ref name="indexStack" />
+					<interceptor-ref name="crmAuth" />
+					<interceptor-ref name="crmCount" />
+				</interceptor-stack>
+			</interceptors>
+			<default-interceptor-ref name="crmStack" />
+			<global-results>
+				<result name="error" type="redirect">/crm/home.yk</result>
+				<result name="noexist">/WEB-INF/page/crm/noExist.jsp</result>
+				<result name="noexistind">/WEB-INF/page/crm/noExistInD.jsp</result>
+				<result name="login">/WEB-INF/page/platform/crm/login.jsp</result>
+				<result name="mbllogin">/WEB-INF/page/platform/crm/mobile/mbllogin.jsp
+				</result>
+				<result name="home">/WEB-INF/page/crm/index.jsp</result>
+				<result name="mblhome">/WEB-INF/page/crm/mobile/mblindex.jsp</result>
+				<result name="mblmanhome">/WEB-INF/page/crm/mobile/mblmanindex.jsp
+				</result>
+				<result name="none">/WEB-INF/page/crm/none.jsp</result>
+				<result name="commonadd">/WEB-INF/page/crm/common/common_add.jsp</result>
+				<result name="commonlist">/WEB-INF/page/crm/common/common_list.jsp
+				</result>
+				<result name="commonview">/WEB-INF/page/crm/common/common_view.jsp
+				</result>
+				<result name="commondialogclose">/WEB-INF/page/crm/common/common_dialogclose.jsp
+				</result>
+				<result name="commoncolumnedit">/WEB-INF/page/crm/common/common_columnedit.jsp
+				</result>
+				<result name="commonmap">/WEB-INF/page/crm/common/common_map.jsp</result>
+				<result name="commoniframemap">/WEB-INF/page/crm/common/common_map_iframe.jsp</result>
+				<result name="commonsearchmap">/WEB-INF/page/crm/common/common_searchmap.jsp
+				</result>
+				<result name="commonsearchAddress">/WEB-INF/page/crm/common/common_searchaddress.jsp
+				</result>
+				<result name="commonsearchbad">/WEB-INF/page/crm/common/common_searchbad.jsp
+				</result>
+				<result name="mblCommonAdd">/WEB-INF/page/crm/mobile/mblCommonAdd.jsp
+				</result>
+				<result name="mblCommonEdit">/WEB-INF/page/crm/mobile/mblCommonEdit.jsp
+				</result>
+				<result name="mblnone">/WEB-INF/page/crm/mobile/mblnone.jsp</result>
+			</global-results>
+			<global-exception-mappings>
+				<exception-mapping exception="java.lang.Exception"
+					result="error" />
+			</global-exception-mappings>
+			<action name="home" class="com.ht.yikecrm.action.IndexAction"
+				method="home">
+			</action>
+			<action name="home_mobile" class="com.ht.yikecrm.action.IndexAction"
+				method="mblhome">
+			</action>
+			<action name="home_manmobile" class="com.ht.yikecrm.action.IndexAction"
+				method="mblmanhome">
+			</action>
+			<action name="home_notice" class="com.ht.yikecrm.action.IndexAction"
+				method="notice">
+			</action>
+			<action name="home_mbladd" class="com.ht.yikecrm.action.IndexAction"
+				method="tombladd">
+				<result name="mbladd">/WEB-INF/page/crm/mobile/mbladd.jsp</result>
+			</action>
+			<action name="home_mblcutman" class="com.ht.yikecrm.action.IndexAction"
+				method="mblcutman">
+			</action>
+			<action name="home_mblcutsal" class="com.ht.yikecrm.action.IndexAction"
+				method="mblcutsal">
+			</action>
+		</package>
+
+<!-- 	<include file="struts-activity.xml"></include> -->
+
+</struts>
+

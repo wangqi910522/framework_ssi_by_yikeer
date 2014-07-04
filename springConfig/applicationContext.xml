@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:oscache="http://www.springmodules.org/schema/oscache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springmodules.org/schema/oscache http://www.springmodules.org/schema/cache/springmodules-oscache.xsd">
+
+	<import resource="applicationContext-platform.xml" />
+	<import resource="applicationContext-user.xml" />
+	<import resource="applicationContext-activity.xml" />
+	<import resource="applicationContext-customer.xml" />
+	<import resource="applicationContext-saleslead.xml" />
+	<import resource="applicationContext-business.xml" />
+	<import resource="applicationContext-linkman.xml" />
+	<import resource="applicationContext-setup.xml" />
+	<import resource="applicationContext-role.xml" />
+	<import resource="applicationContext-definition.xml" />
+	<import resource="applicationContext-licensedefine.xml" />
+	<import resource="applicationContext-report.xml" />
+	<import resource="applicationContext-group.xml" />
+	<import resource="applicationContext-import.xml" />
+	<!-- 合同模块  -->
+	<import resource="applicationContext-order.xml" />
+	<!-- 回款记录 -->
+	<import resource="applicationContext-reimbursement.xml" />
+	<!-- 开票记录 -->
+	<import resource="applicationContext-billing.xml" />
+	<!-- 合同进度 -->
+	<import resource="applicationContext-orderprogress.xml" />
+	<!-- 投诉处理 -->
+	<import resource="applicationContext-complaint.xml" />
+	<!-- 解决方案 -->
+	<import resource="applicationContext-solution.xml" />
+	<!-- 产品 -->
+	<import resource="applicationContext-product.xml"></import>
+	<!-- 投诉处理  -->
+	<import resource="applicationContext-complaint.xml" />
+	<!-- 图表  -->
+	<import resource="applicationContext-charts.xml" />
+	<import resource="applicationContext-memcache.xml" />
+	<import resource="applicationContext-foreignkey.xml" />
+	<import resource="applicationContext-recycle.xml"/>
+	<!-- 账户 -->
+	<import resource="applicationContext-account.xml"/>
+	<!-- 短信 -->
+	<import resource="applicationContext-planmessage.xml"/>
+	<!-- 工作报告 -->
+	<import resource="applicationContext-workreport.xml"/>
+	<!-- 栏目 -->
+	<import resource="applicationContext-part.xml"/>
+	<!-- 搜索 -->
+	<import resource="applicationContext-search.xml"/>
+	<!-- 首页配置 -->
+	<import resource="applicationContext-indexConfig.xml"/>
+	<!-- 页面布局 -->
+	<import resource="applicationContext-layout.xml"/>
+	<!-- 数据管理 -->
+	<import resource="applicationContext-dataManager.xml"/>
+	<import resource="applicationContext-news.xml"/>
+	
+	<!-- ims -->
+	<import resource="applicationContext-ims.xml" />
+	
+	<!-- attachment -->
+	<import resource="applicationContext-attachment.xml" />
+	<!-- 公司通告 -->
+	<import resource="applicationContext-announcement.xml"/>
+	
+	<import resource="classpath:applicationContext-AMC.xml"/>
+	<import resource="classpath:applicationContext-screening.xml"/>
+	<import resource="classpath:applicationContext-TenantVisits.xml"/>
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:applicationInit.properties</value>
+				<value>classpath:memcache.properties</value>
+				<value>classpath:webConfig.properties</value>				
+			</list>
+		</property>
+	</bean>
+	
+	<!--  -->
+	<bean id="webConfig" class="com.ht.yikecrm.util.webConfig.WebConfigUtil">
+		<property name="messageUrl" value="${global_message_url}"/>
+		<property name="yikeerUrl" value="${global_yikeer_url}"/>
+		<property name="httpsConnt" value="${httpsConnt}"/>
+	</bean>
+	<!-- 数据源配置 -->
+	<bean id="abstractXADataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close" abstract="true">
+		<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+		<property name="poolSize" value="${jta.poolSize}" /> 
+        <property name="minPoolSize" value="${jta.minPoolSize}"/> 
+        <property name="maxPoolSize" value="${jta.maxPoolSize}"/> 
+        <property name="borrowConnectionTimeout" value="${jta.borrowConnectionTimeout}"/> 
+        <property name="reapTimeout" value="${jta.reapTimeout}"/> 
+        <!-- 最大空闲时间 --> 
+        <property name="maxIdleTime" value="${jta.maxIdleTime}"/>
+        <property name="maintenanceInterval" value="${jta.maintenanceInterval}" /> 
+		<property name="loginTimeout" value="${jta.loginTimeout}"/>
+        <property name="logWriter" value="${jta.logWriter}"/>
+        <property name="testQuery">
+            <value>select 1</value>
+        </property>
+	</bean>
+	
+	<bean id="dataSource_default" parent="abstractXADataSource">
+		<property name="uniqueResourceName" value="dataSource_default" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">${jdbc.url}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+	</bean>
+	
+	<!-- atomikos事务管理器 -->
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+		init-method="init" destroy-method="close">
+		<property name="forceShutdown">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout" value="300" />
+	</bean>
+	
+	<!-- spring 事务管理器 -->
+	<bean id="springTransactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager">
+			<ref bean="atomikosTransactionManager" />
+		</property>
+		<property name="userTransaction">
+			<ref bean="atomikosUserTransaction" />
+		</property>
+		<!-- 必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation levels by default -->
+		<property name="allowCustomIsolationLevels" value="true"/> 
+	</bean>
+	
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ht.yikecrm.*.service.impl.*.*(..))" />
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="springTransactionManager">
+		<tx:attributes>
+			<tx:method name="tra*" propagation="REQUIRED" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource_default" />
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource_default"></property>
+	</bean>
+	
+	<bean id="jdbcBaseDao" class="com.ht.yikecrm.dao.base.jdbc.JDBCBaseDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="dynamicBeanReader" class="com.ht.yikecrm.spring.bean.impl.DynamicBeanReaderImpl" init-method="init">
+	</bean>
+	
+	
+	<bean id="aspect" class="com.ht.user.dbutil.SelectDbAspect" />
+	
+	<bean id="databaseAspect" class="com.ht.user.dbutil.SelectDatabaseAspect" />
+	
+	<bean id="changeEnter" class="com.ht.yikecrm.interceptor.ChangeEnterToBr" />
+	<bean id="judgeExist" class="com.ht.yikecrm.interceptor.JudgeIsExist" />
+	<bean id="commonAdd" class="com.ht.yikecrm.interceptor.CommonAdd" />
+	<bean id="commonList" class="com.ht.yikecrm.interceptor.CommonList" />
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<aop:config>
+		<aop:pointcut id="jdbcPoint"
+			expression="execution(* com.ht.yikecrm.dao.base.jdbc.JDBCBaseDao.*(..))" />
+			 
+		<aop:pointcut id="crmPoint"
+			expression="execution(* com.ht.yikecrm.*.dao.impl.ibatis.Crm*Impl.*(..)) or
+						execution(* com.ht.yikecrm.*.dao.impl.Crm*Impl.*(..)) or
+						execution(* com.ht.ims.*.dao.impl.Ims*Impl.*(..)) or
+						execution(* com.ht.ims.*.dao.impl.ibatis.Ims*Impl.*(..))" />
+		<aop:pointcut id="ammPoint"
+			expression="execution(* com.ht.yikecrm.account.dao.impl.ibatis*.*(..))" />	
+		<aop:pointcut id="changeEnterPoint" 
+			expression="execution(* com.ht.yikecrm.action.crm.*.*.view(..)) or execution(* com.ht.yikecrm.action.crm.*.*.task_view(..)) or execution(* com.ht.yikecrm.action.crm.*.*.event_view(..))" />
+		<aop:pointcut id="judgeExistPoint" 
+			expression="execution(* com.ht.yikecrm.action.crm.*.*.view(..)) or execution(* com.ht.yikecrm.action.crm.*.*.edit(..)) or 
+						execution(* com.ht.yikecrm.action.crm.*.*.task_view(..)) or execution(* com.ht.yikecrm.action.crm.*.*.task_edit(..)) or 
+						execution(* com.ht.yikecrm.action.crm.*.*.event_view(..)) or execution(* com.ht.yikecrm.action.crm.*.*.event_edit(..)) or 
+						execution(* com.ht.yikecrm.action.crm.report.CrmReportAction.create(..))" />
+		<aop:pointcut id="commonAddPoint" 
+			expression="execution(* com.ht.yikecrm.action.crm.customer.CrmCustomerAction.add(..)) or 
+						execution(* com.ht.yikecrm.action.crm.customer.CrmCustomerAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.customer.CrmCustomerAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.saleslead.CrmSalesLeadAction.add(..)) or 
+						execution(* com.ht.yikecrm.action.crm.saleslead.CrmSalesLeadAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.saleslead.CrmSalesLeadAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.linkman.CrmLinkmanAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.linkman.CrmLinkmanAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.linkman.CrmLinkmanAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.business.CrmBusinessAction.add(..)) or 
+						execution(* com.ht.yikecrm.action.crm.business.CrmBusinessAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.business.CrmBusinessAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.product.CrmProductAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.product.CrmProductAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.product.CrmProductAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmOrderAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmOrderAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmOrderAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.complaint.CrmComplaintAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.complaint.CrmComplaintAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.complaint.CrmComplaintAction.view(..)) or 
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.task_add(..)) or
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.task_edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.task_view(..)) or
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.event_add(..)) or
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.event_edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.activity.CrmActivityAction.event_view(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmReimbursementAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmReimbursementAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmReimbursementAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmBillingAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmBillingAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmBillingAction.view(..)) or
+						execution(* com.ht.yikecrm.action.crm.solution.CrmSolutionAction.add(..)) or
+						execution(* com.ht.yikecrm.action.crm.solution.CrmSolutionAction.edit(..)) or
+						execution(* com.ht.yikecrm.action.crm.solution.CrmSolutionAction.view(..))"/>
+		<aop:pointcut id="commonListPoint" 
+			expression="execution(* com.ht.yikecrm.action.crm.customer.CrmCustomerAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.saleslead.CrmSalesLeadAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.linkman.CrmLinkmanAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.business.CrmBusinessAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.product.CrmProductAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.order.CrmOrderAction.list(..)) or
+						execution(* com.ht.yikecrm.action.crm.complaint.CrmComplaintAction.list(..)) or 
+						execution(* com.ht.yikecrm.action.crm.dataManager.CrmDataManagerAction.batchOperation(..))
+						"/>
+		 
+		<aop:aspect ref="databaseAspect" id="jdbcAspect">
+			<aop:before method="crmBeforeAOP" pointcut-ref="jdbcPoint" />
+			 
+		</aop:aspect>
+		<aop:aspect ref="aspect" id="crmAspect">
+			<aop:before method="crmBeforeAOP" pointcut-ref="crmPoint" />
+		</aop:aspect>
+		<aop:aspect ref="aspect" id="ammAspect">
+			<aop:before method="crmBeforeAOP" pointcut-ref="ammPoint" />
+		</aop:aspect>
+		<aop:aspect ref="changeEnter" id="crmChange">
+			<aop:after method="viewAfterAOP" pointcut-ref="changeEnterPoint" />
+		</aop:aspect>
+		<aop:aspect ref="judgeExist" id="crmJudge">
+			<aop:around method="judgeAroundAOP" pointcut-ref="judgeExistPoint" />
+		</aop:aspect>
+		<aop:aspect ref="commonAdd" id="crmCommonAdd">
+			<aop:after method="getAddJsonAOP" pointcut-ref="commonAddPoint" />
+		</aop:aspect>
+		<aop:aspect ref="commonList" id="crmCommonList">
+			<aop:after method="getListJsonAOP" pointcut-ref="commonListPoint" />
+		</aop:aspect>
+	</aop:config>
+
+
+	<bean id="cacheAdministrator"
+		class="com.opensymphony.oscache.general.GeneralCacheAdministrator"
+		destroy-method="destroy">
+		<constructor-arg>
+			<value>classpath:oscache_up.properties</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="SpringUtil" class="com.ht.yikecrm.util.SpringUtil" />
+	
+	
+	<bean id="springContextHolder" class="com.ht.yikecrm.util.SpringContextHolder" />
+	
+	
+	<!-- 数据库存储的参数 -->
+	<bean id="comParametersDao" class="com.ht.yikecrm.parameters.dao.impl.ComParametersDaoImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	<bean id="comParametersService" class="com.ht.yikecrm.parameters.services.impl.ComParametersServiceImpl">
+		<property name="comParametersDao" ref="comParametersDao"/>
+	</bean>
+
+</beans>

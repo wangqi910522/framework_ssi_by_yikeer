@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="framework_ssi_by_yikeer"
+  id="myeclipse.1404141018357"
+  context-root="/framework_ssi_by_yikeer"
+  j2ee-spec="5.0"
+  archive="framework_ssi_by_yikeer.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
